@@ -42,19 +42,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AlertLevel.cs" />
     <Compile Include="Monitors\DiskMonitor.cs" />
     <Compile Include="Monitors\MemoryMonitor.cs" />
     <Compile Include="Monitors\Monitor.cs" />
     <Compile Include="Monitors\MonitorResult.cs" />
     <Compile Include="Monitors\ProcessMonitor.cs" />
-    <Compile Include="NotifierResult.cs" />
     <Compile Include="System\Disk.cs" />
     <Compile Include="System\OS.cs" />
     <Compile Include="System\Partition.cs" />
     <Compile Include="System\Process.cs" />
     <Compile Include="System\RAM.cs" />
-    <Compile Include="Notifier.cs" />
     <Compile Include="WMI.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

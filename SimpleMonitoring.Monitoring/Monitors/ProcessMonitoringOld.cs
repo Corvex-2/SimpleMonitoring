@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace SimpleMonitoring.Monitoring.Monitors
 {
-    public class ProcessMonitoring
+    public class ProcessMonitoringOld
     {
         public static List<(string processName, bool critical)> ExecutablesToMonitor { get; private set; } = new List<(string processName, bool critical)>();
 
@@ -16,7 +16,7 @@ namespace SimpleMonitoring.Monitoring.Monitors
                 ExecutablesToMonitor.Add((ExecutableName, Critical));
         }
 
-        public ProcessMonitoring()
+        public ProcessMonitoringOld()
         {
             p_Threshholds.Add(new Notifier(AlertLevel.Warning, ProcessMonitoringWarning, 60 * 1000, new TimeSpan(3, 0, 0)));
             p_Threshholds.Add(new Notifier(AlertLevel.Critical, ProcessMonitoringCritical, 60 * 1000, new TimeSpan(1, 0, 0)));

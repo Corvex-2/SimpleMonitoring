@@ -24,8 +24,8 @@ namespace SimpleMonitoring.Utilites
             if (!Directory.Exists(PATH))
                 Directory.CreateDirectory(PATH);
 
-            var currentLogText = (File.Exists(FILE) ? File.ReadAllText(FILE) : "");
-            var additionalLogText = (Prefix + Environment.NewLine + Message);
+            var currentLogText = File.Exists(FILE) ? File.ReadAllText(FILE) : "";
+            var additionalLogText = Prefix + Environment.NewLine + Message;
             var totalLogText = currentLogText + (currentLogText == "" ? "" : Environment.NewLine) + additionalLogText;
             try
             {

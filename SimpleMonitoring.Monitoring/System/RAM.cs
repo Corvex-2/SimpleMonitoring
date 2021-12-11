@@ -21,6 +21,20 @@ namespace SimpleMonitoring.Monitoring.System
             this.FreeVirtualMemory = FreeVirtualMemory;
         }
 
+
+        public double GetTotalFreeSpace()
+        {
+            return FreePhysicalMemory / Math.Pow(1024, 2);
+        }
+        public double GetTotalSpace()
+        {
+            return TotalVisibleMemorySize / Math.Pow(1024, 2);
+        }
+        public double GetTotalUsedSpace()
+        {
+            return GetTotalSpace() - GetTotalFreeSpace();
+        }
+
         public override string ToString()
         {
             StringBuilder Builder = new StringBuilder();

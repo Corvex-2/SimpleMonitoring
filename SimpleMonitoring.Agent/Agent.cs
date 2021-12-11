@@ -24,6 +24,10 @@ namespace SimpleMonitoring.Agent
         {
             var DiskMonitor = new DiskMonitor(15000);
             DiskMonitor.Start();
+            Logging.Log("[TEST]", $"{Network.LocalIp}");
+
+
+
             Console.ReadLine();
             //var m = new Random().Next(100000, 999999);
 

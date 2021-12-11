@@ -87,17 +87,22 @@ namespace SimpleMonitoring.Communication
                 PROCESSING_HOSTS = true;
                 HOSTS = new List<IPHostEntry>();
                 var IPBYTES = ToByteArray(INTERNAL_IP());
+                Logging.Log("[TEST]", "Beginning Resolving " + DateTime.Now.ToString());
                 for (IPBYTES[3] = 1; IPBYTES[3] <= 254; IPBYTES[3]++)
                 {
+                    Console.Title = "Networking Pinging: " + IPBYTES[3].ToString();
                     IPAddress ip = new IPAddress(IPBYTES);
-                    var Ping = _ping.Send(ip, 100);
+                    var Ping = _ping.Send(ip, 200);
                     if (Ping.Status == IPStatus.Success)
                     {
                         try
                         {
-                            var Entry = Dns.GetHostEntry(ip);
-                            HOSTS.Add(Entry);
-                            Logging.Log("[SIMPLE-MONITORING-NETWORK]", Entry.HostName + ", " + ip.ToString());
+                            new Task(() => 
+                            {
+                                var Entry = Dns.GetHostEntry(ip);
+                                HOSTS.Add(Entry);
+                                Logging.Log("[SIMPLE-MONITORING-NETWORK]", Entry.HostName + ", " + ip.ToString());
+                            }).Start();
                         }
                         catch(Exception ex)
                         {
@@ -105,6 +110,7 @@ namespace SimpleMonitoring.Communication
                         }
                     }
                 }
+                Logging.Log("[TEST]", "Ending Resolving " + DateTime.Now.ToString());
                 PROCESSING_HOSTS = false;
             }).Start();
         }

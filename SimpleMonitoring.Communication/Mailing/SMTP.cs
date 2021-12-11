@@ -11,7 +11,7 @@ namespace SimpleMonitoring.Communication.Mailing
 {
     public class SMTP
     {
-        public Config Configuration { get; private set; } = new Config("COMMUNICATION.SMTP");
+        public Config Configuration { get; private set; } = new Config("SimpleMonitoring.Communication.SMTP");
         public SmtpClient SmtpClient { get; private set; }
 
         public SMTP()

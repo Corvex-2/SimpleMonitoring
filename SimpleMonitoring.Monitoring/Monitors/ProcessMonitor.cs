@@ -18,7 +18,7 @@ namespace SimpleMonitoring.Monitoring.Monitors
             base.Initialize();
             if (Configuration.IsNew)
             {
-                Logging.Log("[SimpleMonitoring.Monitoring.ProcessMonitor]", "It appears as if this is the first time the memory monitor is being executed. Initializing and populating the configuration now!");
+                Logging.Log("[SimpleMonitoring.Monitoring.ProcessMonitor]", "It appears as if this is the first time the process monitor is being executed. Initializing and populating the configuration now!");
 
                 Configuration.Add("monitoring.processmonitor.applicationcriticalnotrunning", true);
                 Configuration.Add("monitoring.processmonitor.applicationuncriticalnotrunning", true);

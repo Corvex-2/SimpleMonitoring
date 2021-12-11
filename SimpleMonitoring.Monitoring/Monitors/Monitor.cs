@@ -45,7 +45,7 @@ namespace SimpleMonitoring.Monitoring.Monitors
 
             switch (Result)
             {
-                case MonitorResult.Error:
+                case MonitorResult.Critical:
                     {
                         if (Message.Length > 0 && !string.IsNullOrWhiteSpace(Message))
                         {

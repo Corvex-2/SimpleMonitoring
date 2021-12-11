@@ -18,11 +18,11 @@ namespace SimpleMonitoring.Monitoring.Monitors
         {
             StringBuilder Builder = new StringBuilder();
 
-            var RAM = RAM.GetAll().FirstOrDefault();
-            if (RAM != null && RAM != default(RAM) && RAM.FreePhysicalMemory / Math.Pow(1024, 2) < 2.5)
+            var mRAM = RAM.GetAll().FirstOrDefault();
+            if (mRAM != null && mRAM != default(RAM) && mRAM.FreePhysicalMemory / Math.Pow(1024, 2) < 2.5)
             {
                 Builder.AppendLine("Your System is currently running low on memory");
-                Builder.AppendLine($"less than 2,5 GB of RAM are remaining, currently free memory {Math.Round(RAM.FreePhysicalMemory / Math.Pow(1024, 2), 2)} GB");
+                Builder.AppendLine($"less than 2,5 GB of RAM are remaining, currently free memory {Math.Round(mRAM.FreePhysicalMemory / Math.Pow(1024, 2), 2)} GB");
                 return (true, Builder.ToString());
             }
             return (false, string.Empty);
@@ -32,11 +32,11 @@ namespace SimpleMonitoring.Monitoring.Monitors
         {
             StringBuilder Builder = new StringBuilder();
 
-            var RAM = RAM.GetAll().FirstOrDefault();
-            if (RAM != null && RAM != default(RAM) && RAM.FreePhysicalMemory / Math.Pow(1024, 2) < 1.5)
+            var nRAM = RAM.GetAll().FirstOrDefault();
+            if (nRAM != null && nRAM != default(RAM) && nRAM.FreePhysicalMemory / Math.Pow(1024, 2) < 1.5)
             {
                 Builder.AppendLine("Your System is currently at critical memory!");
-                Builder.AppendLine($"less than 1,5 GB of RAM are remaining, currently free memory {Math.Round(RAM.FreePhysicalMemory / Math.Pow(1024, 2), 2)} GB");
+                Builder.AppendLine($"less than 1,5 GB of RAM are remaining, currently free memory {Math.Round(nRAM.FreePhysicalMemory / Math.Pow(1024, 2), 2)} GB");
                 return (true, Builder.ToString());
             }
             return (false, string.Empty);

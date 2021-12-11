@@ -10,7 +10,7 @@ namespace SimpleMonitoring.Monitoring.Monitors
     {
         Success,
         Warning,
-        Error,
+        Critical,
         Unknown,
     }
 }

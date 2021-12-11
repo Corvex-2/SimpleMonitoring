@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Proc = System.Diagnostics.Process;
+
 namespace SimpleMonitoring.Monitoring.System
 {
     public class Process
@@ -14,7 +16,7 @@ namespace SimpleMonitoring.Monitoring.System
         public string Name;
         public string ProcessId;
         public string ExecutablePath;
-        public global::System.Diagnostics.Process Process;
+        public Proc FrameworkProcess;
         public string WindowTitle;
 
         public Process(string CSName, string Description, string Name, string ProcessId, string ExecutablePath)
@@ -26,13 +28,13 @@ namespace SimpleMonitoring.Monitoring.System
             this.ExecutablePath = ExecutablePath;
             try
             {
-                this.Process = global::System.Diagnostics.Process.GetProcessById(Convert.ToInt32(ProcessId));
-                this.WindowTitle = Process.MainWindowTitle;
+                this.FrameworkProcess = Proc.GetProcessById(Convert.ToInt32(ProcessId));
+                this.WindowTitle = FrameworkProcess.MainWindowTitle;
             }
             catch(Exception ex)
             {
                 this.WindowTitle = "";
-                this.Process = null;
+                this.FrameworkProcess = null;
             }
         }
 

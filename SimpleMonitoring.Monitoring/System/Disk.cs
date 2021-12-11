@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace SimpleMonitoring.Monitoring.System
@@ -24,6 +25,29 @@ namespace SimpleMonitoring.Monitoring.System
         }
 
         public static List<Disk> GetAll() => WMI.GetDiskInfo();
+
+        public double GetTotalFreeSpace()
+        {
+            double totalFreeSpace = 0d;
+            foreach (var partition in Partitions)
+            {
+                totalFreeSpace += partition.FreeSpace / Math.Pow(1024, 3);
+            }
+            return totalFreeSpace;
+        }
+        public double GetTotalSpace()
+        {
+            double totalSpace = 0d;
+            foreach (var partition in Partitions)
+            {
+                totalSpace += partition.TotalSpace / Math.Pow(1024, 3);
+            }
+            return totalSpace;
+        }
+        public double GetTotalUsedSpace()
+        {
+            return GetTotalSpace() - GetTotalFreeSpace();
+        }
 
         public override string ToString()
         {

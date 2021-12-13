@@ -1,6 +1,7 @@
 ﻿using SimpleMonitoring.Utilites;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
@@ -14,11 +15,6 @@ namespace SimpleMonitoring.Communication
     {
         private static List<IPHostEntry> HOSTS { get; set; }
         private static bool PROCESSING_HOSTS { get; set; } = false;
-
-        static Network()
-        {
-            RESOLVE_HOSTS();
-        }
 
         public static string LocalIp
         {
@@ -76,8 +72,30 @@ namespace SimpleMonitoring.Communication
             Result = "";
             return false;
         }
-
-        private static void RESOLVE_HOSTS()
+        public static bool IsAvailable(string IpAdress)
+        {
+            var IPBYTES = ToByteArray(IpAdress);
+            IPAddress ip = new IPAddress(IPBYTES);
+            var Ping = new Ping().Send(ip, 25);
+            if (Ping.Status == IPStatus.Success)
+                return true;
+            return false;
+        }
+        public static string[] GetReachableIpAdresses()
+        {
+            var Reachable = new List<string>();
+            var IPBYTES = ToByteArray(INTERNAL_IP());
+            for (IPBYTES[3] = 1; IPBYTES[3] <= 254; IPBYTES[3]++)
+            {
+                IPAddress ip = new IPAddress(IPBYTES);
+                Debug.WriteLine(ip.ToString());
+                var Ping = _ping.Send(ip, 25);
+                if (Ping.Status == IPStatus.Success)
+                    Reachable.Add(ip.ToString());
+            }
+            return Reachable.ToArray();
+        }
+        public static void RESOLVE_HOSTS()
         {
             if (PROCESSING_HOSTS)
                 return;
@@ -87,10 +105,8 @@ namespace SimpleMonitoring.Communication
                 PROCESSING_HOSTS = true;
                 HOSTS = new List<IPHostEntry>();
                 var IPBYTES = ToByteArray(INTERNAL_IP());
-                Logging.Log("[TEST]", "Beginning Resolving " + DateTime.Now.ToString());
                 for (IPBYTES[3] = 1; IPBYTES[3] <= 254; IPBYTES[3]++)
                 {
-                    Console.Title = "Networking Pinging: " + IPBYTES[3].ToString();
                     IPAddress ip = new IPAddress(IPBYTES);
                     var Ping = _ping.Send(ip, 200);
                     if (Ping.Status == IPStatus.Success)
@@ -101,16 +117,15 @@ namespace SimpleMonitoring.Communication
                             {
                                 var Entry = Dns.GetHostEntry(ip);
                                 HOSTS.Add(Entry);
-                                Logging.Log("[SIMPLE-MONITORING-NETWORK]", Entry.HostName + ", " + ip.ToString());
+                                Logging.Log("[SimpleMonitoring.Communication]", "Successfully located the following device: " + Entry.HostName + ", " + ip.ToString());
                             }).Start();
                         }
                         catch(Exception ex)
                         {
-                            Logging.Log("[SIMPLE-MONITORING-NETWORK]", ip.ToString() + Environment.NewLine + ex.Message);
+                            Logging.Log("[SimpleMonitoring.Communication]", ip.ToString() + Environment.NewLine + ex.Message);
                         }
                     }
                 }
-                Logging.Log("[TEST]", "Ending Resolving " + DateTime.Now.ToString());
                 PROCESSING_HOSTS = false;
             }).Start();
         }

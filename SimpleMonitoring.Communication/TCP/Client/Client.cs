@@ -7,7 +7,7 @@ using SimpleMonitoring.Communication.TCP.Messages;
 
 namespace SimpleMonitoring.Communication.TCP.Client
 {
-    public class Client
+    public class Client : IDisposable
     {
         public delegate void ResponseEventHandler(Message response);
         public static event ResponseEventHandler OnResponseHandled;
@@ -22,6 +22,7 @@ namespace SimpleMonitoring.Communication.TCP.Client
 
         public string IpAdress { get; private set; }
         public int Port { get; private set; }
+        public bool Connected { get; private set; }
 
         public Client(string clientId, string IpAdress, int Port)
         {
@@ -44,7 +45,7 @@ namespace SimpleMonitoring.Communication.TCP.Client
             }
         }
 
-        public async void Run()
+        public async Task<bool> Run()
         {
             var EndPoint = new IPEndPoint(Network.ToIPAddress(IpAdress), Port);
 
@@ -61,8 +62,14 @@ namespace SimpleMonitoring.Communication.TCP.Client
                 MessageData = new MessageData() { Id = $"DATA001" },
             };
             await Channel.SendAsync(Request);
+            Connected = true;
+            return true;
+        }
 
-            Console.ReadLine();
+        public void Dispose()
+        {
+            Channel.Dispose();
+            Connected = false;
         }
     }
 }

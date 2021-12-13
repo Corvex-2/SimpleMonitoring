@@ -21,19 +21,30 @@ namespace SimpleMonitoring.Utilites
         }
         public static void Log(string Prefix, string Message)
         {
-            if (!Directory.Exists(PATH))
-                Directory.CreateDirectory(PATH);
-
-            var currentLogText = File.Exists(FILE) ? File.ReadAllText(FILE) : "";
-            var additionalLogText = Prefix + Environment.NewLine + Message;
-            var totalLogText = currentLogText + (currentLogText == "" ? "" : Environment.NewLine) + additionalLogText;
-            try
+            while (true)
             {
-                File.WriteAllText(FILE, totalLogText);
-            }
-            catch(Exception ex) { }
+                try
+                {
+                    if (!Directory.Exists(PATH))
+                        Directory.CreateDirectory(PATH);
 
-            Console.WriteLine(additionalLogText);
+                    var currentLogText = File.Exists(FILE) ? File.ReadAllText(FILE) : "";
+                    var additionalLogText = Prefix + Environment.NewLine + Message;
+                    var totalLogText = currentLogText + (currentLogText == "" ? "" : Environment.NewLine) + additionalLogText;
+                    try
+                    {
+                        File.WriteAllText(FILE, totalLogText);
+                    }
+                    catch (Exception ex) { }
+
+                    Console.WriteLine(additionalLogText);
+                    break;
+                }
+                catch
+                {
+
+                }
+            }
         }
     }
 }

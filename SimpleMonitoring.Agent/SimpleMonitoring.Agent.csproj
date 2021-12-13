@@ -46,6 +46,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Agent.cs" />
+    <Compile Include="Input.cs" />
+    <Compile Include="Linking.cs" />
     <Compile Include="Monitoring.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />

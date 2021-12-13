@@ -46,7 +46,7 @@ namespace SimpleMonitoring.Utilites
 
             var jentry = JToken.FromObject(Entry);
             p_Content.Add(Key, jentry);
-            Logging.Log("[CONFIG]", $"Added item {Entry.ToString()} with key {Key} to config: {Name}");
+            Logging.Log("[SimpleMonitoring.Utilities]", $"Added item {Entry.ToString()} with key {Key} to config: {Name}");
             SaveToFile(this);
         }
         public T Get<T>(string Key)
@@ -54,7 +54,7 @@ namespace SimpleMonitoring.Utilites
             var Value = p_Content.Where(x => x.Key == Key).FirstOrDefault();
             if (Value.Value == null || Value.Value == default)
             {
-                Logging.Log("[CONFIG ERROR]", $"The specified item does not exist in this config. {Key}");
+                Logging.Log("[SimpleMonitoring.Utilities]", $"CONFIG ERROR: The specified item does not exist in this config. {Key}");
                 throw new InvalidOperationException($"The specified item does not exist in this config. {Key}");
             }
             return Value.Value.ToObject<T>();

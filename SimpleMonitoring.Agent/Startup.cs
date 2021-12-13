@@ -1,9 +1,5 @@
-﻿using SimpleMonitoring.Utilites;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using SimpleMonitoring.Utilites;
 
 using Version = SimpleMonitoring.Utilites.Version;
 
@@ -27,6 +23,7 @@ namespace SimpleMonitoring.Agent
             }
             Console.Title = $"SimpleMonitoring.Agent - Version {Configuration.Get<Version>("agent.version").Complete}";
             Monitoring.Initialize();
+            TrayIcon.Initialize();
             Linking.Initialize();
             Input.Start();
         }

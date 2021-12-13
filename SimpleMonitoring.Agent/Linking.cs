@@ -15,9 +15,12 @@ namespace SimpleMonitoring.Agent
 
         public static void Initialize()
         {
+            if (Initialized)
+                return;
+
+            Client.OnResponseHandled += (resp) => { Logging.Log("[SimpleMonitoring.Agent]", $"Received Message from {resp.Id} {resp.GetType()}"); };
             new Task(() => 
             {
-                Client.OnResponseHandled += (resp) => { Logging.Log("[SimpleMonitoring.Agent]", $"Received Message from {resp.Id} {resp.GetType()}"); };
                 Logging.Log("[SimpleMonitoring.Agent]", "Setting up and linking the client to Monitoring Systems in your network, checking IP-Adress now!");
                 if (Network.LocalIp != "127.0.0.1" && !Network.LocalIp.StartsWith("169.254."))
                 {
@@ -27,7 +30,7 @@ namespace SimpleMonitoring.Agent
                     {
                         if(Connect(m, 6653))
                         {
-                            Logging.Log("[SimpleMonitoring.Agent]", $"Successfully linked to monitor on {m}:{6653} in your network.");
+                            Logging.Log("[SimpleMonitoring.Agent]", $"Automatically linked to monitor on {m}:{6653}.");
                         }
                     }
                 }
@@ -37,6 +40,7 @@ namespace SimpleMonitoring.Agent
                     Logging.Log("[SimpleMonitoring.Agent]", $"Unable to link to any monitors in your network, this could either be due to a missing internet connection or because there are currently no monitors running.");
 
             }).Start();
+            Initialized = true;
         }
 
         public static bool Disconnect(string IpAdress)
@@ -44,11 +48,12 @@ namespace SimpleMonitoring.Agent
             var client = Connections.Where(x => x.IpAdress == IpAdress).FirstOrDefault();
             if(client == null || client == default(Client))
             {
-                Logging.Log("[SimpleMonitoring.Agent]", $"There is currently no monitor connected on {IpAdress}");
+                Logging.Log("[SimpleMonitoring.Agent]", $"There is currently no monitor connected on {IpAdress}.");
                 return false;
             }
             Connections.Remove(client);
             client.Dispose();
+            Logging.Log("[SimpleMonitoring.Agent]", $"Disconnected agent from {IpAdress}!");
             return true;
         }
         public static bool Connect(string IpAddress, int Port)
@@ -83,5 +88,7 @@ namespace SimpleMonitoring.Agent
                 return false;
             }
         }
+
+        internal static bool Initialized { get; private set; } = false;
     }
 }
